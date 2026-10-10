@@ -84,13 +84,19 @@ python build_dashboard.py
 Linux/macOS example:
 
 ```bash
-NBA_DATA_DIR=/path/to/nba-data NBA_OUTPUT_DIR=/path/to/nba-output python3 build_features.py
+export NBA_DATA_DIR="/path/to/nba-data"
+export NBA_OUTPUT_DIR="/path/to/nba-output"
+
+python3 build_features.py
+python3 train_models.py
+python3 predict_matchups.py
+python3 build_dashboard.py
 ```
 
-## Known limitations
+Replace the example paths with your actual directories. `NBA_DATA_DIR` must
+contain `nba_games_raw.csv`. Omit that setting to use the CSV bundled in the
+repository.
 
-- ~1,400 games are missing from the raw dataset because a handful of monthly schedule pages failed to load during collection — excluded rather than backfilled with guessed values.
-- This is a team-level model only; it doesn't account for injuries, trades, or specific lineups.
-- Head-to-head history is one of the weakest features, since most team pairs only meet 1-3 times per season — not enough of a sample to be highly predictive on its own.
-
-See the notebook's conclusion section for the full discussion, including what I'd add with more time (a player-availability flag would likely be the single biggest improvement).
+The `export` commands keep these settings active for all four scripts in the
+current terminal session. Run the scripts in order: later stages read generated
+files from `NBA_OUTPUT_DIR`. The output directory is created automatically.

@@ -18,6 +18,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 def _directory_from_env(name: str, default: Path) -> Path:
     value = os.getenv(name)
     directory = Path(value).expanduser() if value else default
+    if not directory.is_absolute():
+        directory = PROJECT_ROOT / directory
     return directory.resolve()
 
 

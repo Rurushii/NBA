@@ -272,7 +272,7 @@ init();
 </html>
 """
 
-with output_path("nba_predictor_dashboard.html").open("w") as f:
+with output_path("nba_predictor_dashboard.html").open("w", encoding="utf-8") as f:
     f.write(html)
 
 print("Dashboard written, size:", len(html), "bytes")
