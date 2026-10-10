@@ -18,7 +18,9 @@ from sklearn.metrics import (accuracy_score, precision_score, recall_score,
 from sklearn.preprocessing import StandardScaler
 import joblib
 
-DATA = "/sessions/jolly-sleepy-wozniak/mnt/outputs/nba_games_features.csv"
+from project_paths import output_path
+
+DATA = output_path("nba_games_features.csv")
 df = pd.read_csv(DATA, parse_dates=["date"])
 df = df.sort_values("date").reset_index(drop=True)
 
@@ -112,19 +114,19 @@ for target in ["home_pts", "away_pts"]:
 results["regression"] = reg_results
 
 # Save best models + scaler for the dashboard/notebook to reuse
-joblib.dump(scaler, "/sessions/jolly-sleepy-wozniak/mnt/outputs/scaler.joblib")
-joblib.dump(logreg, "/sessions/jolly-sleepy-wozniak/mnt/outputs/model_logreg.joblib")
-joblib.dump(rf_cls, "/sessions/jolly-sleepy-wozniak/mnt/outputs/model_rf_cls.joblib")
+joblib.dump(scaler, output_path("scaler.joblib"))
+joblib.dump(logreg, output_path("model_logreg.joblib"))
+joblib.dump(rf_cls, output_path("model_rf_cls.joblib"))
 joblib.dump(RandomForestRegressor(n_estimators=300, max_depth=6, min_samples_leaf=10, random_state=42)
-            .fit(X_train, train["home_pts"]), "/sessions/jolly-sleepy-wozniak/mnt/outputs/model_rf_home_pts.joblib")
+            .fit(X_train, train["home_pts"]), output_path("model_rf_home_pts.joblib"))
 joblib.dump(RandomForestRegressor(n_estimators=300, max_depth=6, min_samples_leaf=10, random_state=42)
-            .fit(X_train, train["away_pts"]), "/sessions/jolly-sleepy-wozniak/mnt/outputs/model_rf_away_pts.joblib")
+            .fit(X_train, train["away_pts"]), output_path("model_rf_away_pts.joblib"))
 
 # Feature importance from the random forest classifier (useful narrative for the writeup)
 importances = pd.Series(rf_cls.feature_importances_, index=FEATURES).sort_values(ascending=False)
 results["feature_importance_rf_classifier"] = importances.round(4).to_dict()
 
-with open("/sessions/jolly-sleepy-wozniak/mnt/outputs/model_results.json", "w") as f:
+with output_path("model_results.json").open("w") as f:
     json.dump(results, f, indent=2, default=str)
 
 print(json.dumps(results, indent=2, default=str))

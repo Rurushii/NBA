@@ -19,9 +19,11 @@ Feature set:
 import pandas as pd
 import numpy as np
 
-RAW = "/sessions/jolly-sleepy-wozniak/mnt/outputs/nba_games_raw.csv"
-OUT_LONG = "/sessions/jolly-sleepy-wozniak/mnt/outputs/nba_team_game_features.csv"
-OUT_WIDE = "/sessions/jolly-sleepy-wozniak/mnt/outputs/nba_games_features.csv"
+from project_paths import data_path, output_path
+
+RAW = data_path("nba_games_raw.csv")
+OUT_LONG = output_path("nba_team_game_features.csv")
+OUT_WIDE = output_path("nba_games_features.csv")
 
 df = pd.read_csv(RAW)
 df["date"] = pd.to_datetime(df["date"])

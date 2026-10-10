@@ -58,6 +58,35 @@ python3 predict_matchups.py    # precomputes all matchup predictions
 python3 build_dashboard.py     # generates the dashboard HTML
 ```
 
+### File locations
+
+The scripts no longer depend on machine-specific absolute paths. By default,
+`nba_games_raw.csv` is read from the repository folder and generated files are
+written back to that same folder.
+
+For a different local/server layout, set either environment variable before
+running the pipeline:
+
+- `NBA_DATA_DIR` — directory containing `nba_games_raw.csv`
+- `NBA_OUTPUT_DIR` — directory for generated CSVs, model files, JSON, and HTML
+
+PowerShell example:
+
+```powershell
+$env:NBA_DATA_DIR = "C:\path\to\nba-data"
+$env:NBA_OUTPUT_DIR = "C:\path\to\nba-output"
+python build_features.py
+python train_models.py
+python predict_matchups.py
+python build_dashboard.py
+```
+
+Linux/macOS example:
+
+```bash
+NBA_DATA_DIR=/path/to/nba-data NBA_OUTPUT_DIR=/path/to/nba-output python3 build_features.py
+```
+
 ## Known limitations
 
 - ~1,400 games are missing from the raw dataset because a handful of monthly schedule pages failed to load during collection — excluded rather than backfilled with guessed values.

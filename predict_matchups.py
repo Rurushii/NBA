@@ -14,7 +14,9 @@ import numpy as np
 import json
 import joblib
 
-LONG = "/sessions/jolly-sleepy-wozniak/mnt/outputs/nba_team_game_features.csv"
+from project_paths import output_path
+
+LONG = output_path("nba_team_game_features.csv")
 long_df = pd.read_csv(LONG, parse_dates=["date"])
 
 TEAM_FEATURES = [
@@ -46,11 +48,11 @@ for (team, opp), g in season_games.groupby(["team", "opponent"]):
 def get_h2h(team, opp):
     return h2h_pairs.get((team, opp), {"h2h_net_record": 0, "h2h_meetings_so_far": 0})
 
-scaler = joblib.load("/sessions/jolly-sleepy-wozniak/mnt/outputs/scaler.joblib")
-rf_cls = joblib.load("/sessions/jolly-sleepy-wozniak/mnt/outputs/model_rf_cls.joblib")
-logreg = joblib.load("/sessions/jolly-sleepy-wozniak/mnt/outputs/model_logreg.joblib")
-rf_home_pts = joblib.load("/sessions/jolly-sleepy-wozniak/mnt/outputs/model_rf_home_pts.joblib")
-rf_away_pts = joblib.load("/sessions/jolly-sleepy-wozniak/mnt/outputs/model_rf_away_pts.joblib")
+scaler = joblib.load(output_path("scaler.joblib"))
+rf_cls = joblib.load(output_path("model_rf_cls.joblib"))
+logreg = joblib.load(output_path("model_logreg.joblib"))
+rf_home_pts = joblib.load(output_path("model_rf_home_pts.joblib"))
+rf_away_pts = joblib.load(output_path("model_rf_away_pts.joblib"))
 
 MODEL_FEATURE_ORDER = [
     "home_season_avg_pts_for", "home_season_avg_pts_against", "home_season_win_pct",
@@ -103,7 +105,7 @@ for home_team in teams:
             "h2h_net_record_home_perspective": h2h["h2h_net_record"],
         }
 
-with open("/sessions/jolly-sleepy-wozniak/mnt/outputs/matchups.json", "w") as f:
+with output_path("matchups.json").open("w") as f:
     json.dump(matchups, f, indent=1)
 
 # Team summary cards for dashboard (current form as of most recent game)
@@ -124,7 +126,7 @@ for t in teams:
         "win_streak": int(row["win_streak"]),
     }
 
-with open("/sessions/jolly-sleepy-wozniak/mnt/outputs/team_summary.json", "w") as f:
+with output_path("team_summary.json").open("w") as f:
     json.dump(team_summary, f, indent=1)
 
 print(f"Wrote {len(matchups)} matchup predictions and {len(team_summary)} team summaries")

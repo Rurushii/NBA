@@ -1,10 +1,12 @@
 import json
 
-with open("/sessions/jolly-sleepy-wozniak/mnt/outputs/matchups.json") as f:
+from project_paths import output_path
+
+with output_path("matchups.json").open() as f:
     matchups = json.load(f)
-with open("/sessions/jolly-sleepy-wozniak/mnt/outputs/team_summary.json") as f:
+with output_path("team_summary.json").open() as f:
     team_summary = json.load(f)
-with open("/sessions/jolly-sleepy-wozniak/mnt/outputs/model_results.json") as f:
+with output_path("model_results.json").open() as f:
     model_results = json.load(f)
 
 teams = sorted(team_summary.keys())
@@ -270,7 +272,7 @@ init();
 </html>
 """
 
-with open("/sessions/jolly-sleepy-wozniak/mnt/outputs/nba_predictor_dashboard.html", "w") as f:
+with output_path("nba_predictor_dashboard.html").open("w") as f:
     f.write(html)
 
 print("Dashboard written, size:", len(html), "bytes")
