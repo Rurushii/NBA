@@ -100,3 +100,15 @@ repository.
 The `export` commands keep these settings active for all four scripts in the
 current terminal session. Run the scripts in order: later stages read generated
 files from `NBA_OUTPUT_DIR`. The output directory is created automatically.
+
+## Known limitations
+
+- The dataset is incomplete: missing months affect records, rolling statistics,
+  rest calculations, and head-to-head history.
+- This is a team-level model; it does not account for injuries, trades,
+  or specific lineups.
+- Predictions use a historical data snapshot and are not updated live.
+- Head-to-head history is limited because many team pairs have only a few
+  recorded meetings per season.
+
+See `nba_prediction_analysis.ipynb` for methodology and further discussion.
