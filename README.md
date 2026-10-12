@@ -50,71 +50,6 @@ model_results.json              evaluation metrics (accuracy, MAE, feature impor
 
 ## Running it yourself
 
-```bash
-pip install pandas numpy scikit-learn joblib
-python3 build_features.py      # raw CSV -> engineered features
-python3 train_models.py        # trains + evaluates models, saves .joblib files
-python3 predict_matchups.py    # precomputes all matchup predictions
-python3 build_dashboard.py     # generates the dashboard HTML
-```
-
-### File locations
-
-The scripts no longer depend on machine-specific absolute paths. By default,
-`nba_games_raw.csv` is read from the repository folder and generated files are
-written back to that same folder.
-
-For a different local/server layout, set either environment variable before
-running the pipeline:
-
-- `NBA_DATA_DIR` — directory containing `nba_games_raw.csv`
-- `NBA_OUTPUT_DIR` — directory for generated CSVs, model files, JSON, and HTML
-
-PowerShell example:
-
-```powershell
-$env:NBA_DATA_DIR = "C:\path\to\nba-data"
-$env:NBA_OUTPUT_DIR = "C:\path\to\nba-output"
-python build_features.py
-python train_models.py
-python predict_matchups.py
-python build_dashboard.py
-```
-
-Linux/macOS example:
-
-```bash
-export NBA_DATA_DIR="/path/to/nba-data"
-export NBA_OUTPUT_DIR="/path/to/nba-output"
-
-python3 build_features.py
-python3 train_models.py
-python3 predict_matchups.py
-python3 build_dashboard.py
-```
-
-Replace the example paths with your actual directories. `NBA_DATA_DIR` must
-contain `nba_games_raw.csv`. Omit that setting to use the CSV bundled in the
-repository.
-
-The `export` commands keep these settings active for all four scripts in the
-current terminal session. Run the scripts in order: later stages read generated
-files from `NBA_OUTPUT_DIR`. The output directory is created automatically.
-
-## Known limitations
-
-- The dataset is incomplete: missing months affect records, rolling statistics,
-  rest calculations, and head-to-head history.
-- This is a team-level model; it does not account for injuries, trades,
-  or specific lineups.
-- Predictions use a historical data snapshot and are not updated live.
-- Head-to-head history is limited because many team pairs have only a few
-  recorded meetings per season.
-
-See `nba_prediction_analysis.ipynb` for methodology and further discussion.
-
-## Running it yourself
-
 Use **Python 3.12.x**. The `.python-version` file records this target for tools
 that support it; it does not install Python or change your system interpreter.
 
@@ -200,3 +135,17 @@ Linux/macOS:
 Launch Jupyter from the repository root so the notebook can find
 `nba_games_raw.csv`. Select the virtual environment's Python kernel. The
 notebook uses its working directory, rather than the pipeline's path variables.
+
+## Known limitations
+
+- The dataset is incomplete: missing months affect records, rolling statistics,
+  rest calculations, and head-to-head history.
+- This is a team-level model; it does not account for injuries, trades,
+  or specific lineups.
+- Predictions use a historical data snapshot and are not updated live.
+- Head-to-head history is limited because many team pairs have only a few
+  recorded meetings per season.
+
+See `nba_prediction_analysis.ipynb` for methodology and further discussion.
+
+
