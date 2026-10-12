@@ -6,12 +6,16 @@ Predicts the winner and final score of any NBA matchup using a machine learning 
 
 ![accuracy](https://img.shields.io/badge/win%2Floss%20accuracy-74.4%25-brightgreen) ![baseline](https://img.shields.io/badge/vs%20baseline-54.9%25-lightgrey)
 
-## What this is
+A random forest classifier predicts the winner, and two random forest
+regressors estimate final scores from historical team statistics.
 
-A random forest classifier predicts which team wins an NBA game, and two random forest regressors predict each team's final point total — all using only information available *before* tip-off (no box scores, no hindsight). The model is trained on 2,268 real games from the 2023-24 through 2025-26 NBA regular seasons, scraped from basketball-reference.com.
+The bundled snapshot contains 2,317 game-result rows across the 2023-24,
+2024-25, and 2025-26 season labels. Feature generation produces 2,268 eligible
+examples; the current chronological split uses 1,811 training examples and
+457 holdout examples.
 
-- **Win/loss accuracy: 74.4%**, vs. 54.9% for the naive "home team always wins" baseline
-- **Final score MAE: ~9.6 points**, vs. ~10.5 for a naive "predict the season average" baseline
+The dataset is incomplete, and source provenance and game-type classification
+remain unverified. See [DATA_AUDIT.md](DATA_AUDIT.md) for coverage and validation.
 
 ## Try it
 
