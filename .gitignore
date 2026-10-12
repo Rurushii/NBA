@@ -1,0 +1,19 @@
+# Local Python environments and bytecode
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Generated pipeline output and notebook checkpoints
+/outputs/
+.ipynb_checkpoints/
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Logs and operating-system files
+*.log
+.DS_Store
+Thumbs.db

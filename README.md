@@ -112,3 +112,91 @@ files from `NBA_OUTPUT_DIR`. The output directory is created automatically.
   recorded meetings per season.
 
 See `nba_prediction_analysis.ipynb` for methodology and further discussion.
+
+## Running it yourself
+
+Use **Python 3.12.x**. The `.python-version` file records this target for tools
+that support it; it does not install Python or change your system interpreter.
+
+`requirements.txt` pins the pipeline dependencies, including scikit-learn 1.7.2
+to match the saved models. Run the commands below from the repository root.
+They use a local virtual environment without requiring activation.
+
+### Windows Command Prompt
+
+```bat
+py -3.12 -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m pip check
+
+set "NBA_OUTPUT_DIR=outputs"
+.venv\Scripts\python.exe build_features.py
+.venv\Scripts\python.exe train_models.py
+.venv\Scripts\python.exe predict_matchups.py
+.venv\Scripts\python.exe build_dashboard.py
+```
+
+If you use PowerShell, prefix the virtual-environment commands with `.\`
+(for example, `.\.venv\Scripts\python.exe -m pip install -r requirements.txt`)
+and replace the `set` line with `$env:NBA_OUTPUT_DIR = "outputs"`.
+
+### Linux/macOS (Bash or Zsh)
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m pip check
+
+export NBA_OUTPUT_DIR=outputs
+.venv/bin/python build_features.py
+.venv/bin/python train_models.py
+.venv/bin/python predict_matchups.py
+.venv/bin/python build_dashboard.py
+```
+
+The dashboard is written to `outputs/nba_predictor_dashboard.html`. Open it in
+your browser. The `outputs` directory and `.venv` are ignored by Git.
+
+### File locations
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `NBA_DATA_DIR` | Repository root | Directory containing `nba_games_raw.csv` |
+| `NBA_OUTPUT_DIR` | Repository root | Generated CSVs, models, JSON, and HTML |
+
+The examples above use the bundled raw CSV and direct generated files to
+`outputs`. Set `NBA_DATA_DIR` only when using a raw CSV in another directory.
+Use `set "NBA_DATA_DIR=C:\path\to\nba-data"` in Command Prompt,
+`$env:NBA_DATA_DIR = "C:\path\to\nba-data"` in PowerShell, or
+`export NBA_DATA_DIR="/path/to/nba-data"` in Bash/Zsh.
+
+Unset or empty values use the defaults. Relative directories are resolved from
+the repository root. The output directory is created automatically; the input
+CSV must already exist. Run all four stages in order with the same settings.
+Later stages read their generated inputs from `NBA_OUTPUT_DIR`.
+
+Without `NBA_OUTPUT_DIR`, generated files overwrite the existing artifacts in
+the repository root. `.gitignore` does not stop Git tracking existing files.
+
+### Optional notebook tools
+
+Install notebook dependencies only if you want to work with
+`nba_prediction_analysis.ipynb`. This also installs the pipeline dependencies.
+
+Windows Command Prompt:
+
+```bat
+.venv\Scripts\python.exe -m pip install -r requirements-notebook.txt
+.venv\Scripts\jupyter.exe lab
+```
+
+Linux/macOS:
+
+```bash
+.venv/bin/python -m pip install -r requirements-notebook.txt
+.venv/bin/jupyter lab
+```
+
+Launch Jupyter from the repository root so the notebook can find
+`nba_games_raw.csv`. Select the virtual environment's Python kernel. The
+notebook uses its working directory, rather than the pipeline's path variables.
